@@ -21,4 +21,4 @@ migrations_dir = "../db-schema/migrations"
 [[env.production.d1_databases]]
 binding = "DB"
 database_name = "prod-rtainjapan-app"
-database_id = "4f2a1fca-bb23-4844-bfb2-b1dec2b18a8b"
+database_id = "80784fc1-2408-4f77-ace9-238a949c1a7f"
