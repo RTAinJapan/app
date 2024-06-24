@@ -1,0 +1,30 @@
+{
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
+  "scripts": {
+    "build": "tsc && remix vite:build",
+    "dev": "run-p dev:*",
+		"dev:remix": "remix vite:dev",
+    "dev:tsc": "tsc --watch --preserveWatchOutput",
+    "typegen": "wrangler types"
+  },
+  "dependencies": {
+    "@remix-run/cloudflare": "^2.9.2",
+    "@remix-run/cloudflare-pages": "^2.9.2",
+    "@remix-run/react": "^2.9.2",
+    "isbot": "5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240620.0",
+    "@remix-run/dev": "^2.9.2",
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
+    "npm-run-all2": "^6.2.0",
+    "typescript": "^5.1.6",
+    "vite": "^5.1.0",
+    "wrangler": "3.57.1"
+  }
+}
