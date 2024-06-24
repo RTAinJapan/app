@@ -1,17 +1,21 @@
+import { drizzle, DrizzleD1Database } from "drizzle-orm/d1";
 import { type PlatformProxy } from "wrangler";
 
-// When using `wrangler.toml` to configure bindings,
-// `wrangler types` will generate types for those bindings
-// into the global `Env` interface.
-// Need this empty interface so that typechecking passes
-// even if no `wrangler.toml` exists.
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface Env {}
+import * as schema from "../db-schema/schema";
 
 type Cloudflare = Omit<PlatformProxy<Env>, "dispose">;
 
 declare module "@remix-run/cloudflare" {
-  interface AppLoadContext {
-    cloudflare: Cloudflare;
-  }
+	interface AppLoadContext {
+		db: DrizzleD1Database<typeof schema>;
+	}
 }
+
+export const getLoadContext = ({
+	context: { cloudflare },
+}: {
+	context: { cloudflare: Cloudflare };
+}) => {
+	const db = drizzle(cloudflare.env.DB, { schema });
+	return { db };
+};

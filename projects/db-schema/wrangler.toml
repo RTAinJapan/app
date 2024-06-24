@@ -1,20 +1,10 @@
-#:schema node_modules/wrangler/config-schema.json
-
-name = 'rtainjapan-web'
-pages_build_output_dir = "./build/client"
-compatibility_date = "2024-06-24"
-
-[vars]
-NODE_VERSION = "20.14.0"
-PNPM_VERSION = "9.4.0"
-
 [[d1_databases]]
 binding = "DB"
 database_name = "dev-rtainjapan-app"
 database_id = "0de680aa-7b5c-483e-b0ec-df058e9f866e"
 migrations_dir = "../db-schema/migrations"
 
-[[env.production.d1_databases]]
+[[d1_databases]]
 binding = "DB"
 database_name = "prod-rtainjapan-app"
 database_id = "4f2a1fca-bb23-4844-bfb2-b1dec2b18a8b"

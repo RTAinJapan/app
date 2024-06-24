@@ -1,0 +1,17 @@
+{
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"generate-migration": "drizzle-kit generate --name",
+		"migrate-local": "wrangler d1 migrations apply dev-rtainjapan-app --local --persist-to=../../.wrangler",
+		"migrate-dev": "wrangler d1 migrations apply dev-rtainjapan-app --remote",
+		"migrate-prod": "wrangler d1 migrations apply prod-rtainjapan-app --remote"
+	},
+	"dependencies": {
+		"drizzle-orm": "^0.31.2"
+	},
+	"devDependencies": {
+		"drizzle-kit": "^0.22.7",
+		"wrangler": "^3.61.0"
+	}
+}
