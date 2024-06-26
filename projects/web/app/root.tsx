@@ -1,7 +1,7 @@
-import type {
-	LinksFunction,
-	LoaderFunctionArgs,
-	MetaFunction,
+import {
+	type LinksFunction,
+	type MetaFunction,
+	unstable_defineLoader,
 } from "@remix-run/cloudflare";
 import {
 	json,
@@ -23,10 +23,10 @@ export const meta: MetaFunction = () => [
 
 export const links: LinksFunction = () => [];
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = unstable_defineLoader(async ({ request }) => {
 	const locale = await remixI18next.getLocale(request);
 	return json({ locale });
-};
+});
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
 	const data = useRouteLoaderData<typeof loader>("root");

@@ -1,8 +1,8 @@
-import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
+import { unstable_defineLoader } from "@remix-run/cloudflare";
 
-export const loader = ({ request, context }: LoaderFunctionArgs) => {
+export const loader = unstable_defineLoader(({ request, context }) => {
 	return context.auth.authenticate("discord", request, {
 		successRedirect: "/",
 		failureRedirect: "/sign-in",
 	});
-};
+});

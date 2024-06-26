@@ -1,5 +1,5 @@
-import type { ActionFunctionArgs } from "@remix-run/cloudflare";
+import { unstable_defineAction } from "@remix-run/cloudflare";
 
-export const action = ({ request, context }: ActionFunctionArgs) => {
+export const action = unstable_defineAction(({ request, context }) => {
 	return context.auth.logout(request, { redirectTo: "/" });
-};
+});

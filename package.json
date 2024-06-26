@@ -1,16 +1,26 @@
 {
-	"type": "module",
 	"private": true,
+	"type": "module",
+	"scripts": {
+		"generate-migration": "tsx scripts/dev-migration.ts",
+		"lint": "eslint .",
+		"migrate-dev": "wrangler d1 migrations apply dev-rtainjapan-app --remote",
+		"migrate-prod": "wrangler d1 migrations apply prod-rtainjapan-app --remote"
+	},
+	"dependencies": {
+		"@prisma/client": "^5.16.0"
+	},
 	"devDependencies": {
 		"@eslint/js": "^9.5.0",
 		"@types/eslint__js": "^8.42.3",
 		"@types/node": "^20.14.8",
 		"eslint": "^8.38.0",
 		"eslint-plugin-simple-import-sort": "^12.1.0",
+		"execa": "^9.3.0",
 		"prettier": "^3.3.2",
-		"typescript-eslint": "^7.13.1"
-	},
-	"scripts": {
-		"lint": "eslint ."
+		"prisma": "^5.16.0",
+		"tsx": "^4.15.7",
+		"typescript-eslint": "^7.13.1",
+		"wrangler": "^3.62.0"
 	}
 }

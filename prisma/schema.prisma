@@ -1,0 +1,26 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id          Int      @id @default(autoincrement())
+  discordId   String   @unique
+  displayName String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  UserRoles UserRoles?
+}
+
+model UserRoles {
+  userId  Int     @unique
+  isAdmin Boolean @default(false)
+
+  user Users @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+}

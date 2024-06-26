@@ -7,13 +7,14 @@
 		"dev": "run-p dev:*",
 		"dev:remix": "remix vite:dev",
 		"dev:tsc": "tsc --watch --preserveWatchOutput",
-		"typegen": "wrangler types"
+		"typegen": "wrangler types && prisma generate --schema=../db-schema/prisma/schema.prisma"
 	},
 	"dependencies": {
+		"@prisma/adapter-d1": "^5.16.0",
+		"@prisma/client": "^5.16.0",
 		"@remix-run/cloudflare": "^2.10.0",
 		"@remix-run/cloudflare-pages": "^2.10.0",
 		"@remix-run/react": "^2.10.0",
-		"drizzle-orm": "^0.31.2",
 		"i18next": "^23.11.5",
 		"i18next-browser-languagedetector": "^8.0.0",
 		"i18next-resources-to-backend": "^1.2.1",
@@ -31,6 +32,7 @@
 		"@types/react": "^18.3.3",
 		"@types/react-dom": "^18.3.0",
 		"npm-run-all2": "^6.2.0",
+		"prisma": "^5.16.0",
 		"typescript": "~5.5.2",
 		"vite": "^5.1.0",
 		"wrangler": "^3.62.0"
