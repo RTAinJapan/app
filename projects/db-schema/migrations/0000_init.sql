@@ -1,5 +1,5 @@
 CREATE TABLE `users` (
-	`id` text PRIMARY KEY NOT NULL,
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`discord_id` text NOT NULL,
 	`display_name` text NOT NULL,
 	`created_at` integer NOT NULL,

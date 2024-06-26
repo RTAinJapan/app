@@ -20,7 +20,7 @@ declare module "@remix-run/cloudflare" {
 }
 
 interface Session {
-	userId: string;
+	userId: number;
 }
 
 export const getLoadContext = ({

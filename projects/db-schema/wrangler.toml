@@ -3,9 +3,9 @@
 [[d1_databases]]
 binding = "DB"
 database_name = "dev-rtainjapan-app"
-database_id = "0de680aa-7b5c-483e-b0ec-df058e9f866e"
+database_id = "ce315ce5-bd16-42a5-ae07-52ad7ab2754a"
 
 [[d1_databases]]
 binding = "DB"
 database_name = "prod-rtainjapan-app"
-database_id = "80784fc1-2408-4f77-ace9-238a949c1a7f"
+database_id = "bf963e1c-40f0-4a70-9993-ce39783f8866"
