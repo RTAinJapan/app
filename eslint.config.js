@@ -11,6 +11,7 @@ export default typescriptEslint.config(
 	{
 		rules: {
 			"@typescript-eslint/no-unused-vars": "off",
+			"@typescript-eslint/no-unsafe-assignment": "warn",
 		},
 	},
 	{
