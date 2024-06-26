@@ -1,11 +1,22 @@
 import { json, type LoaderFunctionArgs } from "@remix-run/cloudflare";
-import { useLoaderData } from "@remix-run/react";
+import { Form, Link, useLoaderData } from "@remix-run/react";
+import { eq } from "drizzle-orm";
 
-export const loader = async ({ context }: LoaderFunctionArgs) => {
-	const users = await context.db.query.users.findMany({
+import { users } from "../../../db-schema/schema";
+
+export const loader = async ({ request, context }: LoaderFunctionArgs) => {
+	const session = await context.auth.isAuthenticated(request);
+	if (!session) {
+		return json(null);
+	}
+	const user = await context.db.query.users.findFirst({
+		where: eq(users.id, session.userId),
 		columns: { id: true },
 	});
-	return json(users.length);
+	if (!user) {
+		return json(null);
+	}
+	return json(user);
 };
 
 export default () => {
@@ -13,24 +24,16 @@ export default () => {
 
 	return (
 		<div>
-			<h1>Welcome to Remix on Cloudflare</h1>
-			<div>{data}</div>
-			<ul>
-				<li>
-					<a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-						Remix Docs
-					</a>
-				</li>
-				<li>
-					<a
-						target="_blank"
-						href="https://developers.cloudflare.com/pages/framework-guides/deploy-a-remix-site/"
-						rel="noreferrer"
-					>
-						Cloudflare Pages Docs - Remix guide
-					</a>
-				</li>
-			</ul>
+			{data ? (
+				<div>
+					<div>{data.id}</div>
+					<Form method="post" action="/sign-out">
+						<button>Sign out</button>
+					</Form>
+				</div>
+			) : (
+				<Link to="/sign-in">Sign in</Link>
+			)}
 		</div>
 	);
 };

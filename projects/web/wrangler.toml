@@ -16,9 +16,16 @@ PNPM_VERSION = "9.4.0"
 binding = "DB"
 database_name = "dev-rtainjapan-app"
 database_id = "0de680aa-7b5c-483e-b0ec-df058e9f866e"
-migrations_dir = "../db-schema/migrations"
+
+[[kv_namespaces]]
+binding = "SESSION_KV"
+id = "8da788716df04c8fb16115d2b5b652da"
 
 [[env.production.d1_databases]]
 binding = "DB"
 database_name = "prod-rtainjapan-app"
 database_id = "80784fc1-2408-4f77-ace9-238a949c1a7f"
+
+[[env.production.kv_namespaces]]
+binding = "SESSION_KV"
+id = "215d303435bf4cf383526a9e57314754"
