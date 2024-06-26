@@ -12,6 +12,7 @@ export default typescriptEslint.config(
 	{
 		rules: {
 			"@typescript-eslint/no-unused-vars": "off",
+			"@typescript-eslint/only-throw-error": "off",
 			"@typescript-eslint/no-unsafe-assignment": "warn",
 			"@typescript-eslint/no-unsafe-call": "warn",
 			"@typescript-eslint/no-unsafe-member-access": "warn",
@@ -31,15 +32,6 @@ export default typescriptEslint.config(
 			parserOptions: {
 				project: true,
 				tsconfigRootDir: import.meta.resolve("./projects/web"),
-			},
-		},
-	},
-	{
-		files: ["./projects/admin/**/*.{ts,tsx}"],
-		languageOptions: {
-			parserOptions: {
-				project: true,
-				tsconfigRootDir: import.meta.resolve("./projects/admin"),
 			},
 		},
 	},
