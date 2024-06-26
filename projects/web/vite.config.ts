@@ -4,6 +4,9 @@ import { defineConfig } from "vite";
 import { getLoadContext } from "./load-context";
 
 export default defineConfig({
+	build: {
+		target: ["chrome120", "edge120", "firefox120", "safari15.6", "node20"],
+	},
 	plugins: [
 		remix.cloudflareDevProxyVitePlugin({
 			getLoadContext,
