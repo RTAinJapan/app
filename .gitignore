@@ -1,4 +1,4 @@
-/projects/web/build/
+/projects/*/build/
 .wrangler
 .dev.vars
 
