@@ -28,12 +28,6 @@ export const getLoadContext = ({
 }: {
 	context: { cloudflare: Cloudflare };
 }) => {
-	console.log(
-		"getLoadContext",
-		cloudflare.env.DISCORD_CLIENT_ID.length,
-		cloudflare.env.DISCORD_CLIENT_SECRET.length,
-		cloudflare.env.SESSION_COOKIE_SECRET.length,
-	);
 	const db = drizzle(cloudflare.env.DB, { schema });
 
 	const sessionStorage = createWorkersKVSessionStorage({
