@@ -26,6 +26,8 @@ export const getLoadContext = ({
 }) => {
 	const db = new PrismaClient({ adapter: new PrismaD1(cloudflare.env.DB) });
 
+	const superAdmin = new Set(cloudflare.env.SUPER_ADMIN_DISCORD_ID.split(","));
+
 	const sessionStorage = createWorkersKVSessionStorage({
 		kv: cloudflare.env.SESSION_KV,
 		cookie: createCookie("session", {
@@ -46,12 +48,23 @@ export const getLoadContext = ({
 			scope: ["identify"],
 		},
 		async ({ profile }) => {
+			const isSuperAdmin = superAdmin.has(profile.id);
 			const user = await db.users.upsert({
 				where: { discordId: profile.id },
-				update: {},
+				update: {
+					roles: isSuperAdmin
+						? {
+								upsert: {
+									create: { isAdmin: true },
+									update: { isAdmin: true },
+								},
+							}
+						: undefined,
+				},
 				create: {
 					discordId: profile.id,
 					displayName: profile.displayName,
+					roles: isSuperAdmin ? { create: { isAdmin: true } } : undefined,
 				},
 				select: { id: true },
 			});

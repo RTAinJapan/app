@@ -5,14 +5,14 @@ import { useTranslation } from "react-i18next";
 export const loader = defineLoader(async ({ request, context }) => {
 	const session = await context.auth.isAuthenticated(request);
 	if (!session) {
-		return;
+		return null;
 	}
 	const user = await context.db.users.findUnique({
 		where: { id: session.userId },
 		select: { displayName: true },
 	});
 	if (!user) {
-		return;
+		return null;
 	}
 	return { user };
 });

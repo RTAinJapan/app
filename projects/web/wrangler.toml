@@ -7,24 +7,31 @@ compatibility_date = "2024-06-24"
 [vars]
 NODE_VERSION = "20.14.0"
 PNPM_VERSION = "9.4.0"
+SUPER_ADMIN_DISCORD_ID = "159600065017675778"
+
+[env.preview.vars]
+NODE_VERSION = "20.14.0"
+PNPM_VERSION = "9.4.0"
+SUPER_ADMIN_DISCORD_ID = "159600065017675778"
 
 [env.production.vars]
 NODE_VERSION = "20.14.0"
 PNPM_VERSION = "9.4.0"
+SUPER_ADMIN_DISCORD_ID = "159600065017675778"
 
 [[d1_databases]]
 binding = "DB"
 database_name = "dev-rtainjapan-app"
 database_id = "ce315ce5-bd16-42a5-ae07-52ad7ab2754a"
 
-[[kv_namespaces]]
-binding = "SESSION_KV"
-id = "8da788716df04c8fb16115d2b5b652da"
-
 [[env.production.d1_databases]]
 binding = "DB"
 database_name = "prod-rtainjapan-app"
 database_id = "23e5867e-fa8f-4f0e-8492-a08328e903d1"
+
+[[kv_namespaces]]
+binding = "SESSION_KV"
+id = "8da788716df04c8fb16115d2b5b652da"
 
 [[env.production.kv_namespaces]]
 binding = "SESSION_KV"
