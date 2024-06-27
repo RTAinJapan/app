@@ -3,7 +3,6 @@ import { Form } from "@remix-run/react";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 
-import { getDateTimeInputValue } from "../lib/datetime";
 import { assertAdmin } from "../lib/session.server";
 
 export default () => {
@@ -38,12 +37,7 @@ export default () => {
 				<div>
 					<label>
 						Start Time
-						<input
-							type="datetime-local"
-							name="startTime"
-							required
-							defaultValue={getDateTimeInputValue(new Date())}
-						/>
+						<input type="datetime-local" name="startTime" required />
 					</label>
 				</div>
 				<input
@@ -76,7 +70,8 @@ export const action = unstable_defineAction(async ({ request, context }) => {
 			fullName: data.fullName,
 			shortName: data.shortName,
 			startTime: new Date(
-				data.startTime.getTime() + (data.timezoneOffset - serverTimezoneOffset) * 60000,
+				data.startTime.getTime() +
+					(data.timezoneOffset - serverTimezoneOffset) * 60000,
 			),
 		},
 	});
