@@ -1,7 +1,7 @@
-import { unstable_defineLoader as defineLoader } from "@remix-run/cloudflare";
+import { unstable_defineLoader } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
 
-export const loader = defineLoader(async ({ context }) => {
+export const loader = unstable_defineLoader(async ({ context }) => {
 	const users = await context.db.users.findMany({
 		select: { displayName: true, discordId: true },
 	});

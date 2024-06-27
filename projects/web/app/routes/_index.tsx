@@ -1,8 +1,8 @@
-import { unstable_defineLoader as defineLoader } from "@remix-run/cloudflare";
+import { unstable_defineLoader } from "@remix-run/cloudflare";
 import { Form, Link, useLoaderData } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
 
-export const loader = defineLoader(async ({ request, context }) => {
+export const loader = unstable_defineLoader(async ({ request, context }) => {
 	const session = await context.auth.isAuthenticated(request);
 	if (!session) {
 		return null;

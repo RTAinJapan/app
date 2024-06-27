@@ -24,3 +24,12 @@ model UserRoles {
 
   user Users @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
+
+model Events {
+  id        Int    @id @default(autoincrement())
+  fullName  String
+  shortName String
+	startTime DateTime
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+}

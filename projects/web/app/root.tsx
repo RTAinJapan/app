@@ -1,7 +1,7 @@
 import {
 	type LinksFunction,
 	type MetaFunction,
-	unstable_defineLoader as defineLoader,
+	unstable_defineLoader,
 } from "@remix-run/cloudflare";
 import {
 	Links,
@@ -22,7 +22,7 @@ export const meta: MetaFunction = () => [
 
 export const links: LinksFunction = () => [];
 
-export const loader = defineLoader(async ({ request }) => {
+export const loader = unstable_defineLoader(async ({ request }) => {
 	const locale = await remixI18next.getLocale(request);
 	return { locale };
 });

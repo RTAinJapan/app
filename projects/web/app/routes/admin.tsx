@@ -1,9 +1,9 @@
-import { unstable_defineLoader as defineLoader } from "@remix-run/cloudflare";
+import { unstable_defineLoader } from "@remix-run/cloudflare";
 import { Link, Outlet } from "@remix-run/react";
 
 import { assertAdmin } from "../lib/session.server";
 
-export const loader = defineLoader(async ({ request, context }) => {
+export const loader = unstable_defineLoader(async ({ request, context }) => {
 	await assertAdmin(request, context);
 	return null;
 });
