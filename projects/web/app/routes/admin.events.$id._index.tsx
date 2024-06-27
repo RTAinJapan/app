@@ -32,6 +32,9 @@ export default () => {
 	return (
 		<div>
 			<h2>Edit Event</h2>
+			<Form method="post" action="./delete">
+				<button type="submit">Delete</button>
+			</Form>
 			<Form method="post">
 				<div>
 					<label>
