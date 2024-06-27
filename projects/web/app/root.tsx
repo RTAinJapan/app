@@ -1,10 +1,9 @@
 import {
 	type LinksFunction,
 	type MetaFunction,
-	unstable_defineLoader,
+	unstable_defineLoader as defineLoader,
 } from "@remix-run/cloudflare";
 import {
-	json,
 	Links,
 	Meta,
 	Outlet,
@@ -23,9 +22,9 @@ export const meta: MetaFunction = () => [
 
 export const links: LinksFunction = () => [];
 
-export const loader = unstable_defineLoader(async ({ request }) => {
+export const loader = defineLoader(async ({ request }) => {
 	const locale = await remixI18next.getLocale(request);
-	return json({ locale });
+	return { locale };
 });
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -33,7 +32,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 	const { i18n } = useTranslation();
 
 	return (
-		<html lang={data?.locale} dir={i18n.dir()}>
+		<html lang={data.locale} dir={i18n.dir()}>
 			<head>
 				<Meta />
 				<Links />

@@ -17,9 +17,7 @@ declare module "@remix-run/cloudflare" {
 	}
 }
 
-interface Session {
-	userId: number;
-}
+type Session = Readonly<{ userId: number }>;
 
 export const getLoadContext = ({
 	context: { cloudflare },

@@ -1,7 +1,7 @@
-import { unstable_defineLoader } from "@remix-run/cloudflare";
+import { unstable_defineLoader as defineLoader } from "@remix-run/cloudflare";
 import { Outlet } from "@remix-run/react";
 
-export const loader = unstable_defineLoader(async ({ request, context }) => {
+export const loader = defineLoader(async ({ request, context }) => {
 	const session = await context.auth.isAuthenticated(request);
 	if (!session) {
 		throw new Response("must sign in", { status: 401 });
@@ -13,7 +13,7 @@ export const loader = unstable_defineLoader(async ({ request, context }) => {
 	if (!role?.isAdmin) {
 		throw new Response("must be an admin", { status: 403 });
 	}
-	return new Response();
+	return null;
 });
 
 export default () => {
