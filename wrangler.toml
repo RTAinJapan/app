@@ -8,4 +8,4 @@ database_id = "ce315ce5-bd16-42a5-ae07-52ad7ab2754a"
 [[d1_databases]]
 binding = "DB"
 database_name = "prod-rtainjapan-app"
-database_id = "bf963e1c-40f0-4a70-9993-ce39783f8866"
+database_id = "23e5867e-fa8f-4f0e-8492-a08328e903d1"

@@ -24,7 +24,7 @@ id = "8da788716df04c8fb16115d2b5b652da"
 [[env.production.d1_databases]]
 binding = "DB"
 database_name = "prod-rtainjapan-app"
-database_id = "bf963e1c-40f0-4a70-9993-ce39783f8866"
+database_id = "23e5867e-fa8f-4f0e-8492-a08328e903d1"
 
 [[env.production.kv_namespaces]]
 binding = "SESSION_KV"
