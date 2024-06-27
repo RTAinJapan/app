@@ -9,11 +9,11 @@ import {
 	Outlet,
 	Scripts,
 	ScrollRestoration,
-	useRouteLoaderData,
 } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
 
 import { remixI18next } from "./i18next/remix-i18next.server";
+import { useSafeRouteLoaderData } from "./lib/safe-use-route-loader-data";
 
 export const meta: MetaFunction = () => [
 	{ charSet: "utf-8" },
@@ -28,11 +28,11 @@ export const loader = unstable_defineLoader(async ({ request }) => {
 });
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
-	const data = useRouteLoaderData<typeof loader>("root");
+	const data = useSafeRouteLoaderData<typeof loader>("root");
 	const { i18n } = useTranslation();
 
 	return (
-		<html lang={data.locale} dir={i18n.dir()}>
+		<html lang={data?.locale} dir={i18n.dir()}>
 			<head>
 				<Meta />
 				<Links />

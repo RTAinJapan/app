@@ -27,7 +27,9 @@ export default () => {
 				<tbody>
 					{events.map((event) => (
 						<tr key={event.id}>
-							<td>{event.fullName}</td>
+							<td>
+								<Link to={event.id.toFixed()}>{event.fullName}</Link>
+							</td>
 							<td>{event.shortName}</td>
 							<td>{event.startTime.toLocaleString()}</td>
 						</tr>
