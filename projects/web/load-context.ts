@@ -1,8 +1,10 @@
 import { PrismaD1 } from "@prisma/adapter-d1";
 import { PrismaClient } from "@prisma/client";
 import {
+	type Cookie,
 	createCookie,
 	createWorkersKVSessionStorage,
+	type SessionStorage,
 } from "@remix-run/cloudflare";
 import { Authenticator } from "remix-auth";
 import { DiscordStrategy } from "remix-auth-discord";
@@ -14,6 +16,8 @@ declare module "@remix-run/cloudflare" {
 	interface AppLoadContext {
 		db: PrismaClient;
 		auth: Authenticator<Session>;
+		sessionStorage: SessionStorage;
+		renewSessionCookie: Cookie;
 	}
 }
 
@@ -35,6 +39,7 @@ export const getLoadContext = ({
 			httpOnly: true,
 			path: "/",
 			secrets: [cloudflare.env.SESSION_COOKIE_SECRET],
+			maxAge: 60 * 60 * 24 * 14,
 		}),
 	});
 
@@ -74,5 +79,13 @@ export const getLoadContext = ({
 
 	auth.use(discordStrategy);
 
-	return { db, auth };
+	const renewSessionCookie = createCookie("renew-session", {
+		httpOnly: true,
+		sameSite: "lax",
+		path: "/",
+		maxAge: 60 * 60, // 1 hour
+		secure: cloudflare.env.LOCAL !== "true",
+	});
+
+	return { db, auth, renewSessionCookie, sessionStorage };
 };

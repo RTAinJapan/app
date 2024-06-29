@@ -1,4 +1,5 @@
 import {
+	json,
 	type LinksFunction,
 	type MetaFunction,
 	unstable_defineLoader,
@@ -22,8 +23,23 @@ export const meta: MetaFunction = () => [
 
 export const links: LinksFunction = () => [];
 
-export const loader = unstable_defineLoader(async ({ request }) => {
-	const locale = await remixI18next.getLocale(request);
+export const loader = unstable_defineLoader(async ({ request, context }) => {
+	const cookieHeader = request.headers.get("Cookie");
+	const [locale, renewSession] = await Promise.all([
+		remixI18next.getLocale(request),
+		context.renewSessionCookie.parse(cookieHeader) as Promise<string | null>,
+	]);
+	if (!renewSession) {
+		const session = await context.sessionStorage.getSession(cookieHeader);
+		const [sessionCookie, renewSessionCookie] = await Promise.all([
+			context.sessionStorage.commitSession(session),
+			context.renewSessionCookie.serialize("1"),
+		]);
+		const headers = new Headers();
+		headers.append("Set-Cookie", sessionCookie);
+		headers.append("Set-Cookie", renewSessionCookie);
+		return json({ locale }, { headers });
+	}
 	return { locale };
 });
 
