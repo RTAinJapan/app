@@ -8,7 +8,7 @@ export default defineConfig({
 	plugins: [
 		remix.cloudflareDevProxyVitePlugin({
 			getLoadContext,
-			persist: { path: import.meta.resolve("../../.wrangler/state/v3") },
+			persist: { path: import.meta.resolve("../database/.wrangler/state/v3") },
 		}),
 		remix.vitePlugin({
 			future: {
