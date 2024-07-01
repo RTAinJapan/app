@@ -24,6 +24,7 @@ export const loader = unstable_defineLoader(async ({ params, context }) => {
 			shortName: true,
 			startTime: true,
 			published: true,
+			canSubmit: true,
 		},
 	});
 	if (!event) {
@@ -82,6 +83,14 @@ export default () => {
 						defaultChecked={event.published}
 					/>
 				</label>
+				<label>
+					Can Submit
+					<input
+						type="checkbox"
+						name="canSubmit"
+						defaultChecked={event.canSubmit}
+					/>
+				</label>
 				<button type="submit">Save</button>
 			</Form>
 		</div>
@@ -94,6 +103,7 @@ const actionSchema = zfd.formData({
 	startTime: zfd.text(z.coerce.date()),
 	timezoneOffset: zfd.numeric(),
 	published: zfd.checkbox(),
+	canSubmit: zfd.checkbox(),
 });
 
 export const action = unstable_defineAction(
@@ -115,6 +125,7 @@ export const action = unstable_defineAction(
 						(data.timezoneOffset - serverTimezoneOffset) * 60000,
 				),
 				published: data.published,
+				canSubmit: data.canSubmit,
 			},
 		});
 		throw redirect("/admin/events");

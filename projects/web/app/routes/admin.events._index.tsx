@@ -9,6 +9,7 @@ export const loader = unstable_defineLoader(async ({ context }) => {
 			shortName: true,
 			startTime: true,
 			published: true,
+			canSubmit: true,
 		},
 		orderBy: { startTime: "desc" },
 	});
@@ -29,6 +30,7 @@ export default () => {
 						<th>Short Name</th>
 						<th>Start Time</th>
 						<th>Published</th>
+						<th>Can submit</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -40,6 +42,7 @@ export default () => {
 							<td>{event.shortName}</td>
 							<td>{event.startTime.toLocaleString()}</td>
 							<td>{event.published ? "Yes" : "No"}</td>
+							<td>{event.canSubmit ? "Yes" : "No"}</td>
 						</tr>
 					))}
 				</tbody>
