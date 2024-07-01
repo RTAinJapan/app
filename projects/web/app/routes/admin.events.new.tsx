@@ -10,36 +10,30 @@ export default () => {
 		<div>
 			<h2>Create Event</h2>
 			<Form method="post">
-				<div>
-					<label>
-						Full Name
-						<input
-							type="text"
-							name="fullName"
-							autoComplete="off"
-							required
-							defaultValue="RTA in Japan "
-						/>
-					</label>
-				</div>
-				<div>
-					<label>
-						Short Name
-						<input
-							type="text"
-							name="shortName"
-							autoComplete="off"
-							required
-							defaultValue="RiJ"
-						/>
-					</label>
-				</div>
-				<div>
-					<label>
-						Start Time
-						<input type="datetime-local" name="startTime" required />
-					</label>
-				</div>
+				<label>
+					Full Name
+					<input
+						type="text"
+						name="fullName"
+						autoComplete="off"
+						required
+						defaultValue="RTA in Japan "
+					/>
+				</label>
+				<label>
+					Short Name
+					<input
+						type="text"
+						name="shortName"
+						autoComplete="off"
+						required
+						defaultValue="RiJ"
+					/>
+				</label>
+				<label>
+					Start Time
+					<input type="datetime-local" name="startTime" required />
+				</label>
 				<input
 					type="hidden"
 					name="timezoneOffset"

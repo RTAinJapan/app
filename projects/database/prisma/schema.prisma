@@ -26,10 +26,11 @@ model UserRoles {
 }
 
 model Events {
-  id        Int    @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   fullName  String
   shortName String
-	startTime DateTime
-	createdAt DateTime @default(now())
-	updatedAt DateTime @updatedAt
+  startTime DateTime
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

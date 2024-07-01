@@ -18,7 +18,13 @@ export const loader = unstable_defineLoader(async ({ params, context }) => {
 	const { id } = paramsSchema.parse(params);
 	const event = await context.db.events.findUnique({
 		where: { id },
-		select: { id: true, fullName: true, shortName: true, startTime: true },
+		select: {
+			id: true,
+			fullName: true,
+			shortName: true,
+			startTime: true,
+			published: true,
+		},
 	});
 	if (!event) {
 		throw new Response(null, { status: 404 });
@@ -36,46 +42,46 @@ export default () => {
 				<button type="submit">Delete</button>
 			</Form>
 			<Form method="post">
-				<div>
-					<label>
-						Full Name
-						<input
-							type="text"
-							name="fullName"
-							autoComplete="off"
-							required
-							defaultValue={event.fullName}
-						/>
-					</label>
-				</div>
-				<div>
-					<label>
-						Short Name
-						<input
-							type="text"
-							name="shortName"
-							autoComplete="off"
-							required
-							defaultValue={event.shortName}
-						/>
-					</label>
-				</div>
-				<div>
-					<label>
-						Start Time
-						<input
-							type="datetime-local"
-							name="startTime"
-							required
-							defaultValue={getDateTimeInputValue(event.startTime)}
-						/>
-					</label>
-				</div>
+				<label>
+					Full Name
+					<input
+						type="text"
+						name="fullName"
+						required
+						defaultValue={event.fullName}
+					/>
+				</label>
+				<label>
+					Short Name
+					<input
+						type="text"
+						name="shortName"
+						required
+						defaultValue={event.shortName}
+					/>
+				</label>
+				<label>
+					Start Time
+					<input
+						type="datetime-local"
+						name="startTime"
+						required
+						defaultValue={getDateTimeInputValue(event.startTime)}
+					/>
+				</label>
 				<input
 					type="hidden"
 					name="timezoneOffset"
 					value={new Date().getTimezoneOffset()}
 				/>
+				<label>
+					Published
+					<input
+						type="checkbox"
+						name="published"
+						defaultChecked={event.published}
+					/>
+				</label>
 				<button type="submit">Save</button>
 			</Form>
 		</div>
@@ -87,6 +93,7 @@ const actionSchema = zfd.formData({
 	shortName: zfd.text(),
 	startTime: zfd.text(z.coerce.date()),
 	timezoneOffset: zfd.numeric(),
+	published: zfd.checkbox(),
 });
 
 export const action = unstable_defineAction(
@@ -107,6 +114,7 @@ export const action = unstable_defineAction(
 					data.startTime.getTime() +
 						(data.timezoneOffset - serverTimezoneOffset) * 60000,
 				),
+				published: data.published,
 			},
 		});
 		throw redirect("/admin/events");

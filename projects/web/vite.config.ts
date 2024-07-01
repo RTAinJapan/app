@@ -1,12 +1,10 @@
 import * as remix from "@remix-run/dev";
+import browserslistToEsbuild from "browserslist-to-esbuild";
 import { defineConfig } from "vite";
 
 import { getLoadContext } from "./load-context";
 
 export default defineConfig({
-	build: {
-		target: ["chrome120", "edge120", "firefox120", "safari15.6", "node20"],
-	},
 	plugins: [
 		remix.cloudflareDevProxyVitePlugin({
 			getLoadContext,
@@ -21,5 +19,13 @@ export default defineConfig({
 			},
 		}),
 	],
+	build: {
+		target: browserslistToEsbuild([
+			"last 2 chrome versions",
+			"last 2 firefox versions",
+			"last 2 edge versions",
+			"last 2 safari versions",
+		]),
+	},
 	clearScreen: false,
 });

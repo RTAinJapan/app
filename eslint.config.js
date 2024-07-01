@@ -5,7 +5,7 @@ import simpleImportSort from "eslint-plugin-simple-import-sort";
 import typescriptEslint from "typescript-eslint";
 
 export default typescriptEslint.config(
-	{ ignores: ["**/*.js"] },
+	{ ignores: ["**/*.js", "./projects/*/build/**/*"] },
 	eslint.configs.recommended,
 	...typescriptEslint.configs.strictTypeChecked,
 	...typescriptEslint.configs.stylisticTypeChecked,
@@ -34,6 +34,15 @@ export default typescriptEslint.config(
 			parserOptions: {
 				project: true,
 				tsconfigRootDir: import.meta.resolve("./projects/web"),
+			},
+		},
+	},
+	{
+		files: ["./projects/database/**/*.{ts,tsx}"],
+		languageOptions: {
+			parserOptions: {
+				project: true,
+				tsconfigRootDir: import.meta.resolve("./projects/database"),
 			},
 		},
 	},

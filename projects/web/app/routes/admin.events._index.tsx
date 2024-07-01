@@ -3,7 +3,13 @@ import { Link, useLoaderData } from "@remix-run/react";
 
 export const loader = unstable_defineLoader(async ({ context }) => {
 	const events = await context.db.events.findMany({
-		select: { id: true, fullName: true, shortName: true, startTime: true },
+		select: {
+			id: true,
+			fullName: true,
+			shortName: true,
+			startTime: true,
+			published: true,
+		},
 		orderBy: { startTime: "desc" },
 	});
 	return { events };
@@ -22,6 +28,7 @@ export default () => {
 						<th>Full Name</th>
 						<th>Short Name</th>
 						<th>Start Time</th>
+						<th>Published</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -32,6 +39,7 @@ export default () => {
 							</td>
 							<td>{event.shortName}</td>
 							<td>{event.startTime.toLocaleString()}</td>
+							<td>{event.published ? "Yes" : "No"}</td>
 						</tr>
 					))}
 				</tbody>
