@@ -1,5 +1,4 @@
 import "./tailwind.css";
-import "./ant-design-dark.css";
 
 import {
 	type AppLoadContext,
@@ -18,6 +17,7 @@ import {
 	ScrollRestoration,
 	useLoaderData,
 } from "@remix-run/react";
+import { ThemeModeScript } from "flowbite-react";
 import { useTranslation } from "react-i18next";
 import { HiMoon, HiSun } from "react-icons/hi";
 
@@ -40,8 +40,9 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 			<head>
 				<Meta />
 				<Links />
+				<ThemeModeScript mode="auto" />
 			</head>
-			<body>
+			<body className="bg-white text-black dark:bg-black dark:text-white">
 				{children}
 				<ScrollRestoration />
 				<Scripts />
@@ -87,8 +88,10 @@ const ThemeToggle = () => {
 		const isDark = document.documentElement.classList.contains("dark");
 		if (isDark) {
 			document.documentElement.classList.remove("dark");
+			localStorage.setItem("flowbite-theme-mode", "light");
 		} else {
 			document.documentElement.classList.add("dark");
+			localStorage.setItem("flowbite-theme-mode", "dark");
 		}
 	};
 
