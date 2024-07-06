@@ -1,40 +1,35 @@
 import { unstable_defineLoader } from "@remix-run/cloudflare";
-import { Form, Link, useLoaderData } from "@remix-run/react";
-import { useTranslation } from "react-i18next";
+import { Link, useLoaderData } from "@remix-run/react";
 
-export const loader = unstable_defineLoader(async ({ request, context }) => {
-	const session = await context.auth.isAuthenticated(request);
-	if (!session) {
-		return null;
-	}
-	const user = await context.db.users.findUnique({
-		where: { id: session.userId },
-		select: { displayName: true },
+export const loader = unstable_defineLoader(async ({ context }) => {
+	const submittableEvents = await context.db.events.findMany({
+		where: { published: true, canSubmit: true },
+		select: { id: true, fullName: true },
 	});
-	if (!user) {
-		return null;
-	}
-	return { user };
+	return { submittableEvents };
 });
 
-export default () => {
+export default function IndexPage() {
 	const data = useLoaderData<typeof loader>();
-	const { t } = useTranslation();
 
 	return (
 		<div>
-			{data ? (
-				<div>
-					<div>
-						{t("hello")}, {data.user.displayName}
-					</div>
-					<Form method="post" action="/sign-out">
-						<button>Sign out</button>
-					</Form>
-				</div>
+			{data.submittableEvents.length === 0 ? (
+				<p>No events are currently accepting submissions.</p>
 			) : (
-				<Link to="/sign-in">Sign in</Link>
+				<>
+					<h1>Submission open</h1>
+					<ul>
+						{data.submittableEvents.map((event) => (
+							<li key={event.id}>
+								<Link to={`/events/${event.id.toFixed()}/submit`}>
+									{event.fullName}
+								</Link>
+							</li>
+						))}
+					</ul>
+				</>
 			)}
 		</div>
 	);
-};
+}

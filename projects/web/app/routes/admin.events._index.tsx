@@ -16,7 +16,7 @@ export const loader = unstable_defineLoader(async ({ context }) => {
 	return { events };
 });
 
-export default () => {
+export default function AdminEventsPage()  {
 	const { events } = useLoaderData<typeof loader>();
 
 	return (

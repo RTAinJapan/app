@@ -33,7 +33,7 @@ export const loader = unstable_defineLoader(async ({ params, context }) => {
 	return { event };
 });
 
-export default () => {
+export default function AdminEventsEditPage() {
 	const { event } = useLoaderData<typeof loader>();
 
 	return (
@@ -95,7 +95,7 @@ export default () => {
 			</Form>
 		</div>
 	);
-};
+}
 
 const actionSchema = zfd.formData({
 	fullName: zfd.text(),

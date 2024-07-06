@@ -8,7 +8,7 @@ export const loader = unstable_defineLoader(async ({ request, context }) => {
 	return null;
 });
 
-export default () => {
+export default function AdminLayout() {
 	return (
 		<div>
 			<h1>
@@ -19,4 +19,4 @@ export default () => {
 			</div>
 		</div>
 	);
-};
+}

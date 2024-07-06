@@ -15,7 +15,8 @@ model Users {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  roles UserRoles?
+  roles      UserRoles?
+  Submission Submission[]
 }
 
 model UserRoles {
@@ -31,7 +32,31 @@ model Events {
   shortName String
   startTime DateTime
   published Boolean  @default(false)
-	canSubmit Boolean  @default(false)
+  canSubmit Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  Submission Submission[]
+}
+
+model Submission {
+  id      Int @id @default(autoincrement())
+  userId  Int
+  eventId Int
+
+  user  Users  @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  event Events @relation(fields: [eventId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  SubmissionAvailability SubmissionAvailability[]
+
+  @@unique([userId, eventId])
+}
+
+model SubmissionAvailability {
+  id           Int      @id @default(autoincrement())
+  submissionId Int
+  from         DateTime
+  to           DateTime
+
+  submission Submission @relation(fields: [submissionId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }

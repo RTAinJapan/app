@@ -8,7 +8,7 @@ export const loader = unstable_defineLoader(async ({ context }) => {
 	return { users };
 });
 
-export default () => {
+export default function AdminUsersPage() {
 	const { users } = useLoaderData<typeof loader>();
 
 	return (
@@ -32,4 +32,4 @@ export default () => {
 			</table>
 		</div>
 	);
-};
+}

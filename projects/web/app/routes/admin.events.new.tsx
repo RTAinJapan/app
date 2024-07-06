@@ -5,7 +5,7 @@ import { zfd } from "zod-form-data";
 
 import { assertAdmin } from "../lib/session.server";
 
-export default () => {
+export default function AdminEventsNewPage() {
 	return (
 		<div>
 			<h2>Create Event</h2>
@@ -43,7 +43,7 @@ export default () => {
 			</Form>
 		</div>
 	);
-};
+}
 
 const actionSchema = zfd.formData({
 	fullName: zfd.text(),

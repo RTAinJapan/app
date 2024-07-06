@@ -1,6 +1,6 @@
 import { Link } from "@remix-run/react";
 
-export default () => {
+export default function AdminPage() {
 	return (
 		<div>
 			<ul>
@@ -13,4 +13,4 @@ export default () => {
 			</ul>
 		</div>
 	);
-};
+}
