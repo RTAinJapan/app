@@ -2,9 +2,10 @@ import { type ActionFunctionArgs, redirect } from "@remix-run/cloudflare";
 import { z } from "zod";
 
 import { assertAdmin } from "../lib/session.server";
+import { eventSlugSchema } from "../lib/validation";
 
 const paramsSchema = z.object({
-	id: z.coerce.number().int(),
+	eventSlug: eventSlugSchema,
 });
 
 export const action = async ({
@@ -13,7 +14,7 @@ export const action = async ({
 	context,
 }: ActionFunctionArgs) => {
 	await assertAdmin(request, context);
-	const { id } = paramsSchema.parse(params);
-	await context.db.events.delete({ where: { id } });
+	const { eventSlug } = paramsSchema.parse(params);
+	await context.db.events.delete({ where: { slug: eventSlug } });
 	throw redirect("/admin/events");
 };

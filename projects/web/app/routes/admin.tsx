@@ -27,7 +27,7 @@ export default function AdminLayout() {
 	}
 	return (
 		<>
-			<Breadcrumb>
+			<Breadcrumb className="m-2">
 				{breadcrumbs.map(({ id, component }) => (
 					<Fragment key={id}>{component}</Fragment>
 				))}

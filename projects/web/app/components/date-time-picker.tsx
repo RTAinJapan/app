@@ -1,30 +1,27 @@
-import { formatDate } from "date-fns/format";
+import { lightFormat } from "date-fns/lightFormat";
 import { TextInput } from "flowbite-react";
+import type { ComponentProps } from "react";
 
-export const DateTimePicker = ({
-	name,
-	defaultValue,
-	min,
-	max,
-	id,
-}: {
-	name: string;
-	defaultValue?: Date;
+type Props = Omit<
+	ComponentProps<typeof TextInput>,
+	"min" | "max" | "defaultValue"
+> & {
 	min?: Date;
 	max?: Date;
-	id?: string;
-}) => {
+	defaultValue?: Date;
+};
+
+export const DateTimePicker = ({ defaultValue, min, max, ...props }: Props) => {
 	return (
 		<TextInput
-			id={id}
-			name={name}
 			type="datetime-local"
 			required
 			defaultValue={
-				defaultValue && formatDate(defaultValue, "yyyy-MM-ddTHH:mm")
+				defaultValue && lightFormat(defaultValue, "yyyy-MM-dd'T'HH:mm")
 			}
-			min={min && formatDate(min, "yyyy-MM-dd'T'HH:mm")}
-			max={max && formatDate(max, "yyyy-MM-dd'T'HH:mm")}
+			min={min && lightFormat(min, "yyyy-MM-dd'T'HH:mm")}
+			max={max && lightFormat(max, "yyyy-MM-dd'T'HH:mm")}
+			{...props}
 		/>
 	);
 };

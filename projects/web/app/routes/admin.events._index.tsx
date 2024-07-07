@@ -6,12 +6,11 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
 	const events = await context.db.events.findMany({
 		select: {
 			id: true,
-			fullName: true,
-			shortName: true,
+			name: true,
+			slug: true,
+			status: true,
 			startTime: true,
 			endTime: true,
-			published: true,
-			canSubmit: true,
 		},
 		orderBy: { startTime: "desc" },
 	});
@@ -35,28 +34,31 @@ export default function AdminEventsPage() {
 
 			<Table>
 				<Table.Head>
-					<Table.HeadCell>Full Name</Table.HeadCell>
-					<Table.HeadCell>Short Name</Table.HeadCell>
+					<Table.HeadCell>Name</Table.HeadCell>
+					<Table.HeadCell>Slug</Table.HeadCell>
+					<Table.HeadCell>Status</Table.HeadCell>
 					<Table.HeadCell>Start Time</Table.HeadCell>
 					<Table.HeadCell>End Time</Table.HeadCell>
-					<Table.HeadCell>Published</Table.HeadCell>
-					<Table.HeadCell>Can submit</Table.HeadCell>
 				</Table.Head>
 				<Table.Body>
 					{events.map((event) => (
 						<Table.Row key={event.id}>
 							<Table.Cell>
-								<Link to={event.id.toFixed()}>{event.fullName}</Link>
+								<Link
+									to={event.slug}
+									className="text-blue-600 hover:underline dark:text-blue-500"
+								>
+									{event.name}
+								</Link>
 							</Table.Cell>
-							<Table.Cell>{event.shortName}</Table.Cell>
+							<Table.Cell>{event.slug}</Table.Cell>
+							<Table.Cell>{event.status}</Table.Cell>
 							<Table.Cell>
 								{dateTimeFormat.format(new Date(event.startTime))}
 							</Table.Cell>
 							<Table.Cell>
 								{dateTimeFormat.format(new Date(event.endTime))}
 							</Table.Cell>
-							<Table.Cell>{event.published ? "Yes" : "No"}</Table.Cell>
-							<Table.Cell>{event.canSubmit ? "Yes" : "No"}</Table.Cell>
 						</Table.Row>
 					))}
 				</Table.Body>

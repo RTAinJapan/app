@@ -1,6 +1,6 @@
 import { json, type LoaderFunctionArgs } from "@remix-run/cloudflare";
-import { useLoaderData } from "@remix-run/react";
-import { Table } from "flowbite-react";
+import { Link, useLoaderData } from "@remix-run/react";
+import { Breadcrumb, Table } from "flowbite-react";
 
 export const loader = async ({ context }: LoaderFunctionArgs) => {
 	const users = await context.db.users.findMany({
@@ -13,8 +13,7 @@ export default function AdminUsersPage() {
 	const { users } = useLoaderData<typeof loader>();
 
 	return (
-		<div>
-			<h2>Users</h2>
+		<div className="flex flex-col items-start">
 			<Table>
 				<Table.Head>
 					<Table.HeadCell>Display Name</Table.HeadCell>
@@ -32,3 +31,11 @@ export default function AdminUsersPage() {
 		</div>
 	);
 }
+
+export const handle = {
+	breadcrumb: (
+		<Breadcrumb.Item>
+			<Link to="/admin/users">Users</Link>
+		</Breadcrumb.Item>
+	),
+};
