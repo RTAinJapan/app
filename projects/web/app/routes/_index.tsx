@@ -4,7 +4,7 @@ import { Link, useLoaderData } from "@remix-run/react";
 import { EventStatus } from "../lib/constants";
 
 export const loader = async ({ context }: LoaderFunctionArgs) => {
-	const events = await context.db.events.findMany({
+	const events = await context.db.event.findMany({
 		where: { status: EventStatus.Open },
 		select: { id: true, name: true, slug: true },
 	});

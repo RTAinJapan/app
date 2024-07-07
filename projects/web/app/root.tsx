@@ -42,7 +42,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 				<Links />
 				<ThemeModeScript mode="auto" />
 			</head>
-			<body className="dark:bg-gray-900 dark:text-gray-50">
+			<body className="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
 				{children}
 				<ScrollRestoration />
 				<Scripts />
@@ -56,7 +56,7 @@ const getUser = async (request: Request, context: AppLoadContext) => {
 	if (!session) {
 		return null;
 	}
-	return context.db.users.findUnique({
+	return context.db.user.findUnique({
 		where: { id: session.userId },
 		select: { displayName: true },
 	});

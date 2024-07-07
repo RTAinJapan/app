@@ -1,7 +1,7 @@
 import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { Link, Outlet, useMatches } from "@remix-run/react";
 import { Breadcrumb } from "flowbite-react";
-import { Fragment, type ReactNode } from "react";
+import { z } from "zod";
 
 import { assertAdmin } from "../lib/session.server";
 
@@ -10,26 +10,30 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
 	return null;
 };
 
+const handleSchema = z.object({ breadcrumb: z.string().min(1) });
+
 export default function AdminLayout() {
 	const matches = useMatches();
-	const breadcrumbs: { id: string; component: ReactNode }[] = [];
+
+	const breadcrumbs: { id: string; name: string; path: string }[] = [];
 	for (const match of matches) {
-		if (
-			match.handle &&
-			typeof match.handle === "object" &&
-			"breadcrumb" in match.handle
-		) {
+		const parseResult = handleSchema.safeParse(match.handle);
+		if (parseResult.success) {
 			breadcrumbs.push({
 				id: match.id,
-				component: match.handle.breadcrumb as ReactNode,
+				name: parseResult.data.breadcrumb,
+				path: match.pathname,
 			});
 		}
 	}
+
 	return (
 		<>
 			<Breadcrumb>
-				{breadcrumbs.map(({ id, component }) => (
-					<Fragment key={id}>{component}</Fragment>
+				{breadcrumbs.map(({ id, name, path }) => (
+					<Breadcrumb.Item key={id}>
+						<Link to={path}>{name}</Link>
+					</Breadcrumb.Item>
 				))}
 			</Breadcrumb>
 			<Outlet />
@@ -38,9 +42,5 @@ export default function AdminLayout() {
 }
 
 export const handle = {
-	breadcrumb: (
-		<Breadcrumb.Item>
-			<Link to="/admin">Admin</Link>
-		</Breadcrumb.Item>
-	),
+	breadcrumb: "Admin",
 };

@@ -1,6 +1,6 @@
 import { type ActionFunctionArgs, redirect } from "@remix-run/cloudflare";
 import { Form } from "@remix-run/react";
-import { fromZonedTime } from "date-fns-tz/fromZonedTime";
+import { fromZonedTime } from "date-fns-tz";
 import { Button, Label, TextInput } from "flowbite-react";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
@@ -47,7 +47,7 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
 		assertAdmin(request, context),
 	]);
 	const data = actionSchema.parse(formData);
-	await context.db.events.create({
+	await context.db.event.create({
 		data: {
 			name: data.name,
 			slug: data.slug,

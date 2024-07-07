@@ -1,9 +1,9 @@
 import { json, type LoaderFunctionArgs } from "@remix-run/cloudflare";
-import { Link, useLoaderData } from "@remix-run/react";
-import { Breadcrumb, Table } from "flowbite-react";
+import { useLoaderData } from "@remix-run/react";
+import { Table } from "flowbite-react";
 
 export const loader = async ({ context }: LoaderFunctionArgs) => {
-	const users = await context.db.users.findMany({
+	const users = await context.db.user.findMany({
 		select: { displayName: true, discordId: true },
 	});
 	return json({ users });
@@ -33,9 +33,5 @@ export default function AdminUsersPage() {
 }
 
 export const handle = {
-	breadcrumb: (
-		<Breadcrumb.Item>
-			<Link to="/admin/users">Users</Link>
-		</Breadcrumb.Item>
-	),
+	breadcrumb: 'Users',
 };

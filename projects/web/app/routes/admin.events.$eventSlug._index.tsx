@@ -25,7 +25,7 @@ const paramsSchema = z.object({
 
 export const loader = async ({ params, context }: LoaderFunctionArgs) => {
 	const { eventSlug } = paramsSchema.parse(params);
-	const event = await context.db.events.findUnique({
+	const event = await context.db.event.findUnique({
 		where: { slug: eventSlug },
 		select: {
 			id: true,
@@ -110,7 +110,7 @@ export const action = async ({
 	]);
 	const { eventSlug } = paramsSchema.parse(params);
 	const data = actionSchema.parse(formData);
-	await context.db.events.update({
+	await context.db.event.update({
 		where: { slug: eventSlug },
 		data: {
 			name: data.name,

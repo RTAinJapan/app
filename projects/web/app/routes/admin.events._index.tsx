@@ -3,7 +3,7 @@ import { json, Link, useLoaderData } from "@remix-run/react";
 import { Button, Table } from "flowbite-react";
 
 export const loader = async ({ context }: LoaderFunctionArgs) => {
-	const events = await context.db.events.findMany({
+	const events = await context.db.event.findMany({
 		select: {
 			id: true,
 			name: true,

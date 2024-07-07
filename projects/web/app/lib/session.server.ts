@@ -5,7 +5,7 @@ export const getUser = async (request: Request, context: AppLoadContext) => {
 	if (!session) {
 		return null;
 	}
-	return context.db.users.findUnique({
+	return context.db.user.findUnique({
 		where: { id: session.userId },
 		select: {
 			id: true,

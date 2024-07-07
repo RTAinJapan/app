@@ -15,7 +15,7 @@ export const loader = async ({
 	const { eventSlug } = paramsSchema.parse(params);
 	const [user, event] = await Promise.all([
 		assertUser(request, context),
-		context.db.events.findUnique({
+		context.db.event.findUnique({
 			where: { slug: eventSlug },
 			select: { id: true },
 		}),
@@ -23,15 +23,15 @@ export const loader = async ({
 	if (!event) {
 		throw new Response("event not found", { status: 404 });
 	}
-	const submission = await context.db.submission.findUnique({
+	const submission = await context.db.gameSubmission.findUnique({
 		where: {
 			userId_eventId: { userId: user.id, eventId: event.id },
 		},
 		select: {
-			submissionAvailability: { select: { id: true } },
+			availabilities: { select: { id: true } },
 		},
 	});
-	if (!submission || submission.submissionAvailability.length === 0) {
+	if (!submission || submission.availabilities.length === 0) {
 		throw redirect(`/events/${eventSlug}/submit/availability`);
 	}
 	return null;

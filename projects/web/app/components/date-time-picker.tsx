@@ -1,4 +1,4 @@
-import { lightFormat } from "date-fns/lightFormat";
+import { lightFormat } from "date-fns";
 import { TextInput } from "flowbite-react";
 import type { ComponentProps } from "react";
 

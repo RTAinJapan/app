@@ -25,7 +25,7 @@ export const loader = async ({
 	const { eventSlug } = paramsSchema.parse(params);
 	const [user, event] = await Promise.all([
 		assertUser(request, context),
-		context.db.events.findUnique({
+		context.db.event.findUnique({
 			where: { slug: eventSlug },
 			select: { id: true, startTime: true, endTime: true },
 		}),
@@ -33,7 +33,7 @@ export const loader = async ({
 	if (!event) {
 		throw new Response("event not found", { status: 404 });
 	}
-	const availability = await context.db.submissionAvailability.findMany({
+	const availability = await context.db.gameSubmissionAvailability.findMany({
 		where: {
 			submission: {
 				eventId: event.id,
@@ -130,7 +130,7 @@ export const action = async ({
 	const [user, formData, event] = await Promise.all([
 		assertUser(request, context),
 		request.formData(),
-		context.db.events.findUnique({ where: { slug: eventSlug } }),
+		context.db.event.findUnique({ where: { slug: eventSlug } }),
 	]);
 
 	if (!event) {
@@ -156,11 +156,11 @@ export const action = async ({
 		});
 	}
 
-	await context.db.submission.upsert({
+	await context.db.gameSubmission.upsert({
 		create: {
 			userId: user.id,
 			eventId: event.id,
-			submissionAvailability: {
+			availabilities: {
 				createMany: {
 					data: availability,
 				},
@@ -168,7 +168,7 @@ export const action = async ({
 		},
 		where: { userId_eventId: { userId: user.id, eventId: event.id } },
 		update: {
-			submissionAvailability: {
+			availabilities: {
 				deleteMany: {},
 				createMany: {
 					data: availability,

@@ -54,7 +54,7 @@ export const getLoadContext = ({
 		},
 		async ({ profile }) => {
 			const isSuperAdmin = superAdmin.has(profile.id);
-			const user = await db.users.upsert({
+			const user = await db.user.upsert({
 				where: { discordId: profile.id },
 				update: {
 					roles: isSuperAdmin

@@ -15,6 +15,6 @@ export const action = async ({
 }: ActionFunctionArgs) => {
 	await assertAdmin(request, context);
 	const { eventSlug } = paramsSchema.parse(params);
-	await context.db.events.delete({ where: { slug: eventSlug } });
+	await context.db.event.delete({ where: { slug: eventSlug } });
 	throw redirect("/admin/events");
 };
