@@ -3,6 +3,7 @@
 import eslint from "@eslint/js";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import typescriptEslint from "typescript-eslint";
+import tailwindcss from "eslint-plugin-tailwindcss";
 
 export default typescriptEslint.config(
 	{ ignores: ["**/*.js", "./projects/*/build/**/*"] },
@@ -53,4 +54,5 @@ export default typescriptEslint.config(
 			"simple-import-sort/exports": "error",
 		},
 	},
+	...tailwindcss.configs["flat/recommended"],
 );
