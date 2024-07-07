@@ -4,8 +4,8 @@ import {
 	type AppLoadContext,
 	json,
 	type LinksFunction,
+	type LoaderFunctionArgs,
 	type MetaFunction,
-	unstable_defineLoader,
 } from "@remix-run/cloudflare";
 import {
 	Form,
@@ -17,7 +17,7 @@ import {
 	ScrollRestoration,
 	useLoaderData,
 } from "@remix-run/react";
-import { ThemeModeScript } from "flowbite-react";
+import { Button, Navbar, ThemeModeScript } from "flowbite-react";
 import { useTranslation } from "react-i18next";
 import { HiMoon, HiSun } from "react-icons/hi";
 
@@ -42,7 +42,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 				<Links />
 				<ThemeModeScript mode="auto" />
 			</head>
-			<body className="bg-white text-black dark:bg-black dark:text-white">
+			<body className="dark:bg-gray-900 dark:text-gray-50">
 				{children}
 				<ScrollRestoration />
 				<Scripts />
@@ -62,7 +62,7 @@ const getUser = async (request: Request, context: AppLoadContext) => {
 	});
 };
 
-export const loader = unstable_defineLoader(async ({ request, context }) => {
+export const loader = async ({ request, context }: LoaderFunctionArgs) => {
 	const cookieHeader = request.headers.get("Cookie");
 	const [locale, renewSession, user] = await Promise.all([
 		remixI18next.getLocale(request),
@@ -81,7 +81,7 @@ export const loader = unstable_defineLoader(async ({ request, context }) => {
 		return json({ locale, user }, { headers });
 	}
 	return json({ locale, user });
-});
+};
 
 const ThemeToggle = () => {
 	const toggle = () => {
@@ -99,15 +99,15 @@ const ThemeToggle = () => {
 		<button
 			aria-label="Toggle dark mode"
 			onClick={toggle}
-			className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
+			className="rounded-lg p-2.5 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
 		>
 			<HiSun
 				aria-label="Currently dark mode"
-				className="h-5 w-5 hidden dark:block"
+				className="hidden size-5 dark:block"
 			/>
 			<HiMoon
 				aria-label="Currently light mode"
-				className="h-5 w-5 dark:hidden"
+				className="size-5 dark:hidden"
 			/>
 		</button>
 	);
@@ -116,21 +116,23 @@ const ThemeToggle = () => {
 const Header = ({ displayName }: { displayName?: string }) => {
 	const { t } = useTranslation();
 	return (
-		<header className="sticky">
+		<Navbar className="sticky flex">
 			{displayName ? (
 				<>
 					<div>
 						{t("hello")}, {displayName}
 					</div>
 					<Form method="post" action="/sign-out">
-						<button>Sign out</button>
+						<Button>Sign out</Button>
 					</Form>
 				</>
 			) : (
-				<Link to="/sign-in">Sign in</Link>
+				<Button as={Link} to="/sign-in">
+					Sign in
+				</Button>
 			)}
 			<ThemeToggle />
-		</header>
+		</Navbar>
 	);
 };
 

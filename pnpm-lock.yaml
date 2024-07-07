@@ -14,15 +14,24 @@ importers:
       '@types/eslint__js':
         specifier: ^8.42.3
         version: 8.42.3
+      '@types/node':
+        specifier: ^20.14.10
+        version: 20.14.10
       eslint:
         specifier: ^8.38.0
         version: 8.57.0
       eslint-plugin-simple-import-sort:
         specifier: ^12.1.0
         version: 12.1.0(eslint@8.57.0)
+      eslint-plugin-tailwindcss:
+        specifier: ^3.17.4
+        version: 3.17.4(tailwindcss@3.4.4)
       prettier:
         specifier: ^3.3.2
         version: 3.3.2
+      prettier-plugin-tailwindcss:
+        specifier: ^0.6.5
+        version: 0.6.5(prettier@3.3.2)
       typescript-eslint:
         specifier: ^7.13.1
         version: 7.13.1(eslint@8.57.0)(typescript@5.5.3)
@@ -69,6 +78,9 @@ importers:
       '@remix-run/react':
         specifier: ^2.10.2
         version: 2.10.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.5.3)
+      date-fns-tz:
+        specifier: ^3.1.3
+        version: 3.1.3(date-fns@3.6.0)
       flowbite-react:
         specifier: ^0.10.1
         version: 0.10.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.4)
@@ -133,6 +145,9 @@ importers:
       browserslist-to-esbuild:
         specifier: ^2.1.1
         version: 2.1.1(browserslist@4.23.1)
+      date-fns:
+        specifier: ^3.6.0
+        version: 3.6.0
       npm-run-all2:
         specifier: ^6.2.2
         version: 6.2.2
@@ -1563,6 +1578,11 @@ packages:
     resolution: {integrity: sha512-WboRycPNsVw3B3TL559F7kuBUM4d8CgMEvk6xEJlOp7OBPjt6G7z8WMWlD2rOFZLk6OYfFIUGsCOWzcQH9K2og==}
     engines: {node: '>= 6'}
 
+  date-fns-tz@3.1.3:
+    resolution: {integrity: sha512-ZfbMu+nbzW0mEzC8VZrLiSWvUIaI3aRHeq33mTe7Y38UctKukgqPR4nTDwcwS4d64Gf8GghnVsroBuMY3eiTeA==}
+    peerDependencies:
+      date-fns: ^3.0.0
+
   date-fns@3.6.0:
     resolution: {integrity: sha512-fRHTG8g/Gif+kSh50gaGEdToemgfj74aRX3swtiouboip5JDLAyDE9F11nHMIcvOaXeOC6D7SpNhi7uFyB7Uww==}
 
@@ -1731,6 +1751,12 @@ packages:
     resolution: {integrity: sha512-Y2fqAfC11TcG/WP3TrI1Gi3p3nc8XJyEOJYHyEPEGI/UAgNx6akxxlX74p7SbAQdLcgASKhj8M0GKvH3vq/+ig==}
     peerDependencies:
       eslint: '>=5.0.0'
+
+  eslint-plugin-tailwindcss@3.17.4:
+    resolution: {integrity: sha512-gJAEHmCq2XFfUP/+vwEfEJ9igrPeZFg+skeMtsxquSQdxba9XRk5bn0Bp9jxG1VV9/wwPKi1g3ZjItu6MIjhNg==}
+    engines: {node: '>=18.12.0'}
+    peerDependencies:
+      tailwindcss: ^3.4.0
 
   eslint-scope@7.2.2:
     resolution: {integrity: sha512-dOt21O7lTMhDM+X9mB4GX+DZrZtCUJPL/wlcTqxyrx5IvO0IYtILdtrQGQp+8n5S0gwSVmOf9NQrjMOgfQZlIg==}
@@ -2889,6 +2915,58 @@ packages:
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
+
+  prettier-plugin-tailwindcss@0.6.5:
+    resolution: {integrity: sha512-axfeOArc/RiGHjOIy9HytehlC0ZLeMaqY09mm8YCkMzznKiDkwFzOpBvtuhuv3xG5qB73+Mj7OCe2j/L1ryfuQ==}
+    engines: {node: '>=14.21.3'}
+    peerDependencies:
+      '@ianvs/prettier-plugin-sort-imports': '*'
+      '@prettier/plugin-pug': '*'
+      '@shopify/prettier-plugin-liquid': '*'
+      '@trivago/prettier-plugin-sort-imports': '*'
+      '@zackad/prettier-plugin-twig-melody': '*'
+      prettier: ^3.0
+      prettier-plugin-astro: '*'
+      prettier-plugin-css-order: '*'
+      prettier-plugin-import-sort: '*'
+      prettier-plugin-jsdoc: '*'
+      prettier-plugin-marko: '*'
+      prettier-plugin-organize-attributes: '*'
+      prettier-plugin-organize-imports: '*'
+      prettier-plugin-sort-imports: '*'
+      prettier-plugin-style-order: '*'
+      prettier-plugin-svelte: '*'
+    peerDependenciesMeta:
+      '@ianvs/prettier-plugin-sort-imports':
+        optional: true
+      '@prettier/plugin-pug':
+        optional: true
+      '@shopify/prettier-plugin-liquid':
+        optional: true
+      '@trivago/prettier-plugin-sort-imports':
+        optional: true
+      '@zackad/prettier-plugin-twig-melody':
+        optional: true
+      prettier-plugin-astro:
+        optional: true
+      prettier-plugin-css-order:
+        optional: true
+      prettier-plugin-import-sort:
+        optional: true
+      prettier-plugin-jsdoc:
+        optional: true
+      prettier-plugin-marko:
+        optional: true
+      prettier-plugin-organize-attributes:
+        optional: true
+      prettier-plugin-organize-imports:
+        optional: true
+      prettier-plugin-sort-imports:
+        optional: true
+      prettier-plugin-style-order:
+        optional: true
+      prettier-plugin-svelte:
+        optional: true
 
   prettier@2.8.8:
     resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
@@ -5096,6 +5174,10 @@ snapshots:
 
   data-uri-to-buffer@3.0.1: {}
 
+  date-fns-tz@3.1.3(date-fns@3.6.0):
+    dependencies:
+      date-fns: 3.6.0
+
   date-fns@3.6.0: {}
 
   debounce@2.1.0: {}
@@ -5281,6 +5363,12 @@ snapshots:
   eslint-plugin-simple-import-sort@12.1.0(eslint@8.57.0):
     dependencies:
       eslint: 8.57.0
+
+  eslint-plugin-tailwindcss@3.17.4(tailwindcss@3.4.4):
+    dependencies:
+      fast-glob: 3.3.2
+      postcss: 8.4.39
+      tailwindcss: 3.4.4
 
   eslint-scope@7.2.2:
     dependencies:
@@ -6662,6 +6750,10 @@ snapshots:
       source-map-js: 1.2.0
 
   prelude-ls@1.2.1: {}
+
+  prettier-plugin-tailwindcss@0.6.5(prettier@3.3.2):
+    dependencies:
+      prettier: 3.3.2
 
   prettier@2.8.8: {}
 

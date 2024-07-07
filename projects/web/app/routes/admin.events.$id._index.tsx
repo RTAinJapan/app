@@ -1,20 +1,21 @@
 import {
+	type ActionFunctionArgs,
+	json,
+	type LoaderFunctionArgs,
 	redirect,
-	unstable_defineAction,
-	unstable_defineLoader,
 } from "@remix-run/cloudflare";
 import { Form, useLoaderData } from "@remix-run/react";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 
-import { getDateTimeInputValue } from "../lib/datetime";
+import { DateTimePicker } from "../components/date-time-picker";
 import { assertAdmin } from "../lib/session.server";
 
 const paramsSchema = z.object({
 	id: z.coerce.number().int(),
 });
 
-export const loader = unstable_defineLoader(async ({ params, context }) => {
+export const loader = async ({ params, context }: LoaderFunctionArgs) => {
 	const { id } = paramsSchema.parse(params);
 	const event = await context.db.events.findUnique({
 		where: { id },
@@ -30,8 +31,8 @@ export const loader = unstable_defineLoader(async ({ params, context }) => {
 	if (!event) {
 		throw new Response(null, { status: 404 });
 	}
-	return { event };
-});
+	return json({ event });
+};
 
 export default function AdminEventsEditPage() {
 	const { event } = useLoaderData<typeof loader>();
@@ -63,11 +64,9 @@ export default function AdminEventsEditPage() {
 				</label>
 				<label>
 					Start Time
-					<input
-						type="datetime-local"
+					<DateTimePicker
 						name="startTime"
-						required
-						defaultValue={getDateTimeInputValue(event.startTime)}
+						defaultValue={new Date(event.startTime)}
 					/>
 				</label>
 				<input
@@ -106,28 +105,30 @@ const actionSchema = zfd.formData({
 	canSubmit: zfd.checkbox(),
 });
 
-export const action = unstable_defineAction(
-	async ({ params, request, context }) => {
-		const [formData] = await Promise.all([
-			request.formData(),
-			assertAdmin(request, context),
-		]);
-		const { id } = paramsSchema.parse(params);
-		const serverTimezoneOffset = new Date().getTimezoneOffset();
-		const data = actionSchema.parse(formData);
-		await context.db.events.update({
-			where: { id },
-			data: {
-				fullName: data.fullName,
-				shortName: data.shortName,
-				startTime: new Date(
-					data.startTime.getTime() +
-						(data.timezoneOffset - serverTimezoneOffset) * 60000,
-				),
-				published: data.published,
-				canSubmit: data.canSubmit,
-			},
-		});
-		throw redirect("/admin/events");
-	},
-);
+export const action = async ({
+	params,
+	request,
+	context,
+}: ActionFunctionArgs) => {
+	const [formData] = await Promise.all([
+		request.formData(),
+		assertAdmin(request, context),
+	]);
+	const { id } = paramsSchema.parse(params);
+	const serverTimezoneOffset = new Date().getTimezoneOffset();
+	const data = actionSchema.parse(formData);
+	await context.db.events.update({
+		where: { id },
+		data: {
+			fullName: data.fullName,
+			shortName: data.shortName,
+			startTime: new Date(
+				data.startTime.getTime() +
+					(data.timezoneOffset - serverTimezoneOffset) * 60000,
+			),
+			published: data.published,
+			canSubmit: data.canSubmit,
+		},
+	});
+	throw redirect("/admin/events");
+};

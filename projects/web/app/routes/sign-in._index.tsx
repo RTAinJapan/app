@@ -1,9 +1,10 @@
 import { Form } from "@remix-run/react";
+import { Button } from "flowbite-react";
 
 export default function SignInPage() {
 	return (
 		<Form method="post" action="/sign-in/discord">
-			<button>Sign in with Discord</button>
+			<Button type="submit">Sign in with Discord</Button>
 		</Form>
 	);
 }

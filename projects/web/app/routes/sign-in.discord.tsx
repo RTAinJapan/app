@@ -1,5 +1,5 @@
-import { unstable_defineAction as defineAction } from "@remix-run/cloudflare";
+import type { ActionFunctionArgs } from "@remix-run/cloudflare";
 
-export const action = defineAction(async ({ request, context }) => {
+export const action = async ({ request, context }: ActionFunctionArgs) => {
 	return context.auth.authenticate("discord", request);
-});
+};

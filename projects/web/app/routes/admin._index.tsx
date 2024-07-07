@@ -5,10 +5,20 @@ export default function AdminPage() {
 		<div>
 			<ul>
 				<li>
-					<Link to="./users">Users</Link>
+					<Link
+						to="./users"
+						className="text-blue-600 hover:underline dark:text-blue-500"
+					>
+						Users
+					</Link>
 				</li>
 				<li>
-					<Link to="./events">Events</Link>
+					<Link
+						to="./events"
+						className="text-blue-600 hover:underline dark:text-blue-500"
+					>
+						Events
+					</Link>
 				</li>
 			</ul>
 		</div>

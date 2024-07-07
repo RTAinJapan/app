@@ -1,4 +1,4 @@
-import { unstable_defineAction } from "@remix-run/cloudflare";
+import type { ActionFunctionArgs } from "@remix-run/cloudflare";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 
@@ -11,34 +11,36 @@ const actionSchema = zfd.formData({
 	to: zfd.text(z.coerce.date()),
 });
 
-export const action = unstable_defineAction(
-	async ({ params, request, context }) => {
-		const { id: eventId } = paramsSchema.parse(params);
-		const [user, formData] = await Promise.all([
-			assertUser(request, context),
-			request.formData(),
-		]);
-		const { from, to } = actionSchema.parse(formData);
-		await context.db.submissionAvailability.create({
-			data: {
-				from,
-				to,
-				submission: {
-					connectOrCreate: {
-						create: {
+export const action = async ({
+	params,
+	request,
+	context,
+}: ActionFunctionArgs) => {
+	const { id: eventId } = paramsSchema.parse(params);
+	const [user, formData] = await Promise.all([
+		assertUser(request, context),
+		request.formData(),
+	]);
+	const { from, to } = actionSchema.parse(formData);
+	await context.db.submissionAvailability.create({
+		data: {
+			from,
+			to,
+			submission: {
+				connectOrCreate: {
+					create: {
+						eventId,
+						userId: user.id,
+					},
+					where: {
+						userId_eventId: {
 							eventId,
 							userId: user.id,
-						},
-						where: {
-							userId_eventId: {
-								eventId,
-								userId: user.id,
-							},
 						},
 					},
 				},
 			},
-		});
-		return null;
-	},
-);
+		},
+	});
+	return null;
+};

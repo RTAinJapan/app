@@ -1,13 +1,13 @@
-import { unstable_defineLoader } from "@remix-run/cloudflare";
+import { json, type LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { Link, useLoaderData } from "@remix-run/react";
 
-export const loader = unstable_defineLoader(async ({ context }) => {
+export const loader = async ({ context }: LoaderFunctionArgs) => {
 	const submittableEvents = await context.db.events.findMany({
 		where: { published: true, canSubmit: true },
 		select: { id: true, fullName: true },
 	});
-	return { submittableEvents };
-});
+	return json({ submittableEvents });
+};
 
 export default function IndexPage() {
 	const data = useLoaderData<typeof loader>();
