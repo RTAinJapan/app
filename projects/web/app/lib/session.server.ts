@@ -5,13 +5,23 @@ export const getUser = async (request: Request, context: AppLoadContext) => {
 	if (!session) {
 		return null;
 	}
-	return context.db.user.findUnique({
+
+	const user = await context.db.user.findUnique({
 		where: { id: session.userId },
 		select: {
 			id: true,
+			displayName: true,
 			roles: { select: { isAdmin: true } },
 		},
 	});
+
+	// Session exists but the user doesn't.
+	// This can happen if the user was deleted from the database, but the session is still valid.
+	if (!user) {
+		await context.auth.logout(request, { redirectTo: "/" });
+	}
+
+	return user;
 };
 
 export const assertUser = async (request: Request, context: AppLoadContext) => {

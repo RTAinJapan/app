@@ -1,7 +1,6 @@
 import "./tailwind.css";
 
 import {
-	type AppLoadContext,
 	json,
 	type LinksFunction,
 	type LoaderFunctionArgs,
@@ -23,6 +22,7 @@ import { HiMoon, HiSun } from "react-icons/hi";
 
 import { remixI18next } from "./i18next/remix-i18next.server";
 import { useSafeRouteLoaderData } from "./lib/safe-use-route-loader-data";
+import { getUser } from "./lib/session.server";
 
 export const meta: MetaFunction = () => [
 	{ charSet: "utf-8" },
@@ -49,17 +49,6 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 			</body>
 		</html>
 	);
-};
-
-const getUser = async (request: Request, context: AppLoadContext) => {
-	const session = await context.auth.isAuthenticated(request);
-	if (!session) {
-		return null;
-	}
-	return context.db.user.findUnique({
-		where: { id: session.userId },
-		select: { displayName: true },
-	});
 };
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
