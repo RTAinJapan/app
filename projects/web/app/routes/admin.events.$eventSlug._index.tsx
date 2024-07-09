@@ -78,7 +78,7 @@ export default function AdminEventsEditPage() {
 					defaultValue={new Date(event.endTime)}
 				/>
 
-				<Label id="status" value="Status" />
+				<Label htmlFor="status" value="Status" />
 				<Select id="status" name="status" defaultValue={event.status}>
 					<option value={EventStatus.Hidden}>Hidden</option>
 					<option value={EventStatus.Visible}>Visible</option>
