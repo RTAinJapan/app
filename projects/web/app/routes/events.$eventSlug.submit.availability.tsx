@@ -7,7 +7,7 @@ import { useFetcher, useLoaderData } from "@remix-run/react";
 import { fromZonedTime } from "date-fns-tz";
 import { Breadcrumb, Button } from "flowbite-react";
 import { Fragment, useState } from "react";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdFileCopy } from "react-icons/md";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 
@@ -79,7 +79,7 @@ export default function EventsSubmitAvailabilityPage() {
 			</Button>
 
 			<fetcher.Form method="post">
-				<div className="grid grid-cols-[auto_auto_auto_auto] items-center justify-start gap-x-1 gap-y-2">
+				<div className="grid grid-cols-[repeat(5,auto)] items-center justify-start gap-x-1 gap-y-2">
 					{inputs.map((input, index) => {
 						return (
 							<Fragment key={input.id}>
@@ -98,6 +98,9 @@ export default function EventsSubmitAvailabilityPage() {
 									max={new Date(event.endTime)}
 									aria-label="To"
 								/>
+								<Button>
+									<MdFileCopy />
+								</Button>
 								<Button
 									onClick={() => {
 										setInputs((old) => old.filter((_, i) => i !== index));
