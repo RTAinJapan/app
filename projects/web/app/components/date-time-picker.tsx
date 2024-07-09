@@ -1,9 +1,10 @@
 import { lightFormat } from "date-fns";
-import { TextInput } from "flowbite-react";
 import type { ComponentProps } from "react";
 
+import { Input } from "./shadcn/input";
+
 type Props = Omit<
-	ComponentProps<typeof TextInput>,
+	ComponentProps<typeof Input>,
 	"min" | "max" | "defaultValue"
 > & {
 	min?: Date;
@@ -13,7 +14,7 @@ type Props = Omit<
 
 export const DateTimePicker = ({ defaultValue, min, max, ...props }: Props) => {
 	return (
-		<TextInput
+		<Input
 			type="datetime-local"
 			required
 			defaultValue={

@@ -16,10 +16,17 @@ import {
 	ScrollRestoration,
 	useLoaderData,
 } from "@remix-run/react";
-import { Button, Navbar, ThemeModeScript } from "flowbite-react";
+import clsx from "clsx";
+import type { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
-import { HiMoon, HiSun } from "react-icons/hi";
+import {
+	PreventFlashOnWrongTheme,
+	ThemeProvider,
+	useTheme,
+} from "remix-themes";
 
+import { Button } from "./components/shadcn/button";
+import { ThemeToggle } from "./components/theme-toggle";
 import { remixI18next } from "./i18next/remix-i18next.server";
 import { useSafeRouteLoaderData } from "./lib/safe-use-route-loader-data";
 import { getUser } from "./lib/session.server";
@@ -31,18 +38,19 @@ export const meta: MetaFunction = () => [
 
 export const links: LinksFunction = () => [];
 
-export const Layout = ({ children }: { children: React.ReactNode }) => {
+const LayoutContent = ({ children }: PropsWithChildren) => {
 	const data = useSafeRouteLoaderData<typeof loader>("root");
 	const { i18n } = useTranslation();
+	const [theme] = useTheme();
 
 	return (
-		<html lang={data?.locale ?? "en"} dir={i18n.dir()}>
+		<html className={clsx(theme)} lang={data?.locale ?? "en"} dir={i18n.dir()}>
 			<head>
 				<Meta />
+				<PreventFlashOnWrongTheme ssrTheme={Boolean(data?.theme)} />
 				<Links />
-				<ThemeModeScript mode="auto" />
 			</head>
-			<body className="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+			<body>
 				{children}
 				<ScrollRestoration />
 				<Scripts />
@@ -51,13 +59,28 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 	);
 };
 
+export const Layout = ({ children }: PropsWithChildren) => {
+	const data = useSafeRouteLoaderData<typeof loader>("root");
+
+	return (
+		<ThemeProvider
+			specifiedTheme={data?.theme ?? null}
+			themeAction="/set-theme"
+		>
+			<LayoutContent>{children}</LayoutContent>
+		</ThemeProvider>
+	);
+};
+
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
 	const cookieHeader = request.headers.get("Cookie");
-	const [locale, renewSession, user] = await Promise.all([
+	const [locale, renewSession, user, { getTheme }] = await Promise.all([
 		remixI18next.getLocale(request),
 		context.renewSessionCookie.parse(cookieHeader) as Promise<string | null>,
 		getUser(request, context),
+		context.themeSessionResolver(request),
 	]);
+	const theme = getTheme();
 	if (!renewSession) {
 		const session = await context.sessionStorage.getSession(cookieHeader);
 		const [sessionCookie, renewSessionCookie] = await Promise.all([
@@ -67,45 +90,15 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
 		const headers = new Headers();
 		headers.append("Set-Cookie", sessionCookie);
 		headers.append("Set-Cookie", renewSessionCookie);
-		return json({ locale, user }, { headers });
+		return json({ locale, user, theme }, { headers });
 	}
-	return json({ locale, user });
-};
-
-const ThemeToggle = () => {
-	const toggle = () => {
-		const isDark = document.documentElement.classList.contains("dark");
-		if (isDark) {
-			document.documentElement.classList.remove("dark");
-			localStorage.setItem("flowbite-theme-mode", "light");
-		} else {
-			document.documentElement.classList.add("dark");
-			localStorage.setItem("flowbite-theme-mode", "dark");
-		}
-	};
-
-	return (
-		<button
-			aria-label="Toggle dark mode"
-			onClick={toggle}
-			className="rounded-lg p-2.5 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
-		>
-			<HiSun
-				aria-label="Currently dark mode"
-				className="hidden size-5 dark:block"
-			/>
-			<HiMoon
-				aria-label="Currently light mode"
-				className="size-5 dark:hidden"
-			/>
-		</button>
-	);
+	return json({ locale, user, theme });
 };
 
 const Header = ({ displayName }: { displayName?: string }) => {
 	const { t } = useTranslation();
 	return (
-		<Navbar className="sticky flex">
+		<header className="sticky flex">
 			{displayName ? (
 				<>
 					<div>
@@ -116,12 +109,12 @@ const Header = ({ displayName }: { displayName?: string }) => {
 					</Form>
 				</>
 			) : (
-				<Button as={Link} to="/sign-in">
-					Sign in
+				<Button asChild>
+					<Link to="/sign-in">Sign in</Link>
 				</Button>
 			)}
 			<ThemeToggle />
-		</Navbar>
+		</header>
 	);
 };
 

@@ -1,6 +1,14 @@
 import { json, type LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
-import { Table } from "flowbite-react";
+
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "../components/shadcn/table";
 
 export const loader = async ({ context }: LoaderFunctionArgs) => {
 	const users = await context.db.user.findMany({
@@ -15,23 +23,25 @@ export default function AdminUsersPage() {
 	return (
 		<div className="flex flex-col items-start">
 			<Table>
-				<Table.Head>
-					<Table.HeadCell>Display Name</Table.HeadCell>
-					<Table.HeadCell>Discord ID</Table.HeadCell>
-				</Table.Head>
-				<Table.Body>
+				<TableHeader>
+					<TableRow>
+						<TableHead>Display Name</TableHead>
+						<TableHead>Discord ID</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
 					{users.map((user) => (
-						<Table.Row key={user.discordId}>
-							<Table.Cell>{user.displayName}</Table.Cell>
-							<Table.Cell>{user.discordId}</Table.Cell>
-						</Table.Row>
+						<TableRow key={user.discordId}>
+							<TableCell>{user.displayName}</TableCell>
+							<TableCell>{user.discordId}</TableCell>
+						</TableRow>
 					))}
-				</Table.Body>
+				</TableBody>
 			</Table>
 		</div>
 	);
 }
 
 export const handle = {
-	breadcrumb: 'Users',
+	breadcrumb: "Users",
 };

@@ -1,11 +1,13 @@
 import { type ActionFunctionArgs, redirect } from "@remix-run/cloudflare";
 import { Form } from "@remix-run/react";
 import { fromZonedTime } from "date-fns-tz";
-import { Button, Label, TextInput } from "flowbite-react";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 
 import { DateTimePicker } from "../components/date-time-picker";
+import { Button } from "../components/shadcn/button";
+import { Input } from "../components/shadcn/input";
+import { Label } from "../components/shadcn/label";
 import { EventStatus } from "../lib/constants";
 import { assertAdmin } from "../lib/session.server";
 import { dateTimeInputSchema, eventSlugSchema } from "../lib/validation";
@@ -16,16 +18,16 @@ export default function AdminEventsNewPage() {
 			<h2 className="text-xl">Create Event</h2>
 
 			<Form method="post" className="flex flex-col items-start">
-				<Label htmlFor="name" value="Name" />
-				<TextInput type="text" name="name" id="name" required />
+				<Label htmlFor="name">Name</Label>
+				<Input type="text" name="name" id="name" required />
 
-				<Label htmlFor="slug" value="Slug" />
-				<TextInput type="text" name="slug" id="slug" required />
+				<Label htmlFor="slug">Slug</Label>
+				<Input type="text" name="slug" id="slug" required />
 
-				<Label htmlFor="startTime" value="Start time" />
+				<Label htmlFor="startTime">Start time</Label>
 				<DateTimePicker name="startTime" id="startTime" required />
 
-				<Label htmlFor="endTime" value="End time" />
+				<Label htmlFor="endTime">End time</Label>
 				<DateTimePicker name="endTime" id="endTime" required />
 
 				<Button type="submit">Create</Button>

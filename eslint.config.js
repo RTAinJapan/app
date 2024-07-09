@@ -55,4 +55,10 @@ export default typescriptEslint.config(
 		},
 	},
 	...tailwindcss.configs["flat/recommended"],
+	{
+		files: ["projects/web/app/components/shadcn/**/*.tsx"],
+		rules: {
+			"tailwindcss/no-custom-classname": "off",
+		},
+	},
 );

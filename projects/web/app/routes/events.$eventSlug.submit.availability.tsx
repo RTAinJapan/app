@@ -5,13 +5,14 @@ import {
 } from "@remix-run/cloudflare";
 import { useFetcher, useLoaderData } from "@remix-run/react";
 import { fromZonedTime } from "date-fns-tz";
-import { Breadcrumb, Button } from "flowbite-react";
 import { Fragment, useState } from "react";
 import { MdDelete, MdFileCopy } from "react-icons/md";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 
 import { DateTimePicker } from "../components/date-time-picker";
+import { Breadcrumb, BreadcrumbItem } from "../components/shadcn/breadcrumb";
+import { Button } from "../components/shadcn/button";
 import { assertUser } from "../lib/session.server";
 import { dateTimeInputSchema, eventSlugSchema } from "../lib/validation";
 
@@ -60,7 +61,7 @@ export default function EventsSubmitAvailabilityPage() {
 	return (
 		<div>
 			<Breadcrumb>
-				<Breadcrumb.Item>Availability</Breadcrumb.Item>
+				<BreadcrumbItem>Availability</BreadcrumbItem>
 			</Breadcrumb>
 
 			<Button

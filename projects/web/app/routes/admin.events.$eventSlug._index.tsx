@@ -6,11 +6,20 @@ import {
 } from "@remix-run/cloudflare";
 import { Form, useLoaderData } from "@remix-run/react";
 import { fromZonedTime } from "date-fns-tz";
-import { Button, Label, Select, TextInput } from "flowbite-react";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 
 import { DateTimePicker } from "../components/date-time-picker";
+import { Button } from "../components/shadcn/button";
+import {
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "../components/shadcn/form";
+import { Input } from "../components/shadcn/input";
+import { Label } from "../components/shadcn/label";
+import { Select, SelectContent, SelectItem } from "../components/shadcn/select";
 import { EventStatus } from "../lib/constants";
 import { assertAdmin } from "../lib/session.server";
 import {
@@ -56,13 +65,13 @@ export default function AdminEventsEditPage() {
 			</Form>
 
 			<Form method="post" className="flex flex-col items-start">
-				<Label htmlFor="name" value="Name" />
-				<TextInput name="name" id="name" required defaultValue={event.name} />
+				<Label htmlFor="name">Name</Label>
+				<Input name="name" id="name" required defaultValue={event.name} />
 
-				<Label htmlFor="slug" value="Slug" />
-				<TextInput name="slug" id="slug" required defaultValue={event.slug} />
+				<Label htmlFor="slug">Slug</Label>
+				<Input name="slug" id="slug" required defaultValue={event.slug} />
 
-				<Label htmlFor="startTime" value="Start time" />
+				<Label htmlFor="startTime">Start time</Label>
 				<DateTimePicker
 					name="startTime"
 					id="startTime"
@@ -70,7 +79,7 @@ export default function AdminEventsEditPage() {
 					defaultValue={new Date(event.startTime)}
 				/>
 
-				<Label htmlFor="endTime" value="End time" />
+				<Label htmlFor="endTime">End time</Label>
 				<DateTimePicker
 					name="endTime"
 					id="endTime"
@@ -78,12 +87,23 @@ export default function AdminEventsEditPage() {
 					defaultValue={new Date(event.endTime)}
 				/>
 
-				<Label htmlFor="status" value="Status" />
-				<Select id="status" name="status" defaultValue={event.status}>
-					<option value={EventStatus.Hidden}>Hidden</option>
-					<option value={EventStatus.Visible}>Visible</option>
-					<option value={EventStatus.Open}>Open</option>
-				</Select>
+				<Label htmlFor="status">Status</Label>
+				<FormField
+					name="status"
+					render={() => (
+						<FormItem>
+							<FormLabel>Status</FormLabel>
+							<Select defaultValue={event.status}>
+								<SelectContent>
+									<SelectItem value={EventStatus.Hidden}>Hidden</SelectItem>
+									<SelectItem value={EventStatus.Visible}>Visible</SelectItem>
+									<SelectItem value={EventStatus.Open}>Open</SelectItem>
+								</SelectContent>
+							</Select>
+							<FormMessage />
+						</FormItem>
+					)}
+				></FormField>
 
 				<Button type="submit">Save</Button>
 			</Form>

@@ -1,6 +1,15 @@
 import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { json, Link, useLoaderData } from "@remix-run/react";
-import { Button, Table } from "flowbite-react";
+
+import { Button } from "../components/shadcn/button";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "../components/shadcn/table";
 
 export const loader = async ({ context }: LoaderFunctionArgs) => {
 	const events = await context.db.event.findMany({
@@ -28,40 +37,42 @@ export default function AdminEventsPage() {
 
 	return (
 		<div className="flex flex-col items-start">
-			<Button as={Link} to="./new">
-				Create
+			<Button asChild>
+				<Link to="./new" />
 			</Button>
 
 			<Table>
-				<Table.Head>
-					<Table.HeadCell>Name</Table.HeadCell>
-					<Table.HeadCell>Slug</Table.HeadCell>
-					<Table.HeadCell>Status</Table.HeadCell>
-					<Table.HeadCell>Start Time</Table.HeadCell>
-					<Table.HeadCell>End Time</Table.HeadCell>
-				</Table.Head>
-				<Table.Body>
+				<TableHeader>
+					<TableRow>
+						<TableHead>Name</TableHead>
+						<TableHead>Slug</TableHead>
+						<TableHead>Status</TableHead>
+						<TableHead>Start Time</TableHead>
+						<TableHead>End Time</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
 					{events.map((event) => (
-						<Table.Row key={event.id}>
-							<Table.Cell>
+						<TableRow key={event.id}>
+							<TableCell>
 								<Link
 									to={event.slug}
 									className="text-blue-600 hover:underline dark:text-blue-500"
 								>
 									{event.name}
 								</Link>
-							</Table.Cell>
-							<Table.Cell>{event.slug}</Table.Cell>
-							<Table.Cell>{event.status}</Table.Cell>
-							<Table.Cell>
+							</TableCell>
+							<TableCell>{event.slug}</TableCell>
+							<TableCell>{event.status}</TableCell>
+							<TableCell>
 								{dateTimeFormat.format(new Date(event.startTime))}
-							</Table.Cell>
-							<Table.Cell>
+							</TableCell>
+							<TableCell>
 								{dateTimeFormat.format(new Date(event.endTime))}
-							</Table.Cell>
-						</Table.Row>
+							</TableCell>
+						</TableRow>
 					))}
-				</Table.Body>
+				</TableBody>
 			</Table>
 		</div>
 	);

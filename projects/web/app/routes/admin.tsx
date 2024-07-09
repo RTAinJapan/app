@@ -1,8 +1,13 @@
 import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { Link, Outlet, useMatches } from "@remix-run/react";
-import { Breadcrumb } from "flowbite-react";
+import { Fragment } from "react/jsx-runtime";
 import { z } from "zod";
 
+import {
+	Breadcrumb,
+	BreadcrumbItem,
+	BreadcrumbSeparator,
+} from "../components/shadcn/breadcrumb";
 import { assertAdmin } from "../lib/session.server";
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
@@ -30,10 +35,13 @@ export default function AdminLayout() {
 	return (
 		<>
 			<Breadcrumb>
-				{breadcrumbs.map(({ id, name, path }) => (
-					<Breadcrumb.Item key={id}>
-						<Link to={path}>{name}</Link>
-					</Breadcrumb.Item>
+				{breadcrumbs.map(({ id, name, path }, index) => (
+					<Fragment key={id}>
+						{index > 0 && <BreadcrumbSeparator />}
+						<BreadcrumbItem>
+							<Link to={path}>{name}</Link>
+						</BreadcrumbItem>
+					</Fragment>
 				))}
 			</Breadcrumb>
 			<Outlet />

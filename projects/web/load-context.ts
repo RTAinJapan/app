@@ -3,11 +3,16 @@ import { PrismaClient } from "@prisma/client";
 import {
 	type Cookie,
 	createCookie,
+	createCookieSessionStorage,
 	createWorkersKVSessionStorage,
 	type SessionStorage,
 } from "@remix-run/cloudflare";
 import { Authenticator } from "remix-auth";
 import { DiscordStrategy } from "remix-auth-discord";
+import {
+	createThemeSessionResolver,
+	type ThemeSessionResolver,
+} from "remix-themes";
 import { type PlatformProxy } from "wrangler";
 
 type Cloudflare = Omit<PlatformProxy<Env>, "dispose">;
@@ -18,6 +23,7 @@ declare module "@remix-run/cloudflare" {
 		auth: Authenticator<Session>;
 		sessionStorage: SessionStorage;
 		renewSessionCookie: Cookie;
+		themeSessionResolver: ThemeSessionResolver;
 	}
 }
 
@@ -87,5 +93,15 @@ export const getLoadContext = ({
 		secure: cloudflare.env.LOCAL !== "true",
 	});
 
-	return { db, auth, renewSessionCookie, sessionStorage };
+	const themeSessionStorage = createCookieSessionStorage({
+		cookie: {
+			name: "theme",
+			path: "/",
+			httpOnly: true,
+			secure: cloudflare.env.LOCAL !== "true",
+		},
+	});
+	const themeSessionResolver = createThemeSessionResolver(themeSessionStorage);
+
+	return { db, auth, renewSessionCookie, sessionStorage, themeSessionResolver };
 };
